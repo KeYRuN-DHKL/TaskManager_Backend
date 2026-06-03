@@ -18,10 +18,24 @@ namespace TaskManager.API.Controller
         }
 
         [HttpGet("projects/{projectId}")]
-        public async Task<IActionResult> GetTaskByProject([FromRoute] int projectId)
+        public async Task<IActionResult> GetTaskByProject([FromRoute] int projectId, [FromBody] TaskFilterParameters filter)
         {
-            var tasks = await _appTaskService.GetTasksByProjectAsync(projectId);
+            var tasks = await _appTaskService.GetTasksByProjectAsync(projectId,filter);
             return Ok(tasks);
+        }
+
+        [HttpGet("overdue/{userId}")]
+        public async Task<IActionResult> GetOverdueTask([FromRoute] int userId)
+        {
+            var overDueTasks = await _appTaskService.GetOverdueTaskAsync(userId);
+            return Ok(overDueTasks);
+        }
+
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetTaskSummary([FromQuery] int projectId)
+        {
+            var summary = await _appTaskService.GetTaskSummaryAsync(projectId);
+            return Ok(summary);
         }
 
         [HttpGet("project")]

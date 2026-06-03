@@ -8,6 +8,6 @@ namespace TaskManager.Core.Enum
     {
         Todo,
         InProgress,
-        Dene
+        Done
     }
 }

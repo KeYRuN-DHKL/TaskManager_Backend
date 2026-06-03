@@ -2,7 +2,7 @@
 
 namespace TaskManager.Core.DTOs.AppTask
 {
-    public record TaskFilterParams
+    public record TaskFilterParameters
     {
         public TaskStatusEnum? Status { get; init; }
         public TaskPriorityEnum? Priority { get; init; }
