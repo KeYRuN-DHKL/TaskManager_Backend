@@ -1,5 +1,4 @@
-﻿using TaskManager.Core.DTOs.AppTask;
-using TaskManager.Core.DTOs.Tag;
+﻿using TaskManager.Core.DTOs.Tag;
 
 namespace TaskManager.Core.Interfaces
 {

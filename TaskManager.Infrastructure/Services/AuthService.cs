@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using TaskManager.Core.TaskManagerExceptions;
 using TaskManager.Core.DTOs.Auth;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Interfaces;
@@ -20,13 +21,13 @@ namespace TaskManager.Infrastructure.Services
             _configuration = configuration;
         }
 
-        public async Task<AuthResponse?> LoginAsync(LoginRequest request)
+        public async Task<AuthResponse> LoginAsync(LoginRequest request)
         {
             var user = await _unitOfWork.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
-                return null;
+                throw new UserNotFoundException("Invalid User...");
             }
 
             return new AuthResponse(GenerateToken(user), user.UserName, user.Email, user.Role);

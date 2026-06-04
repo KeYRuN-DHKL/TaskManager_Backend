@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager.Core.DTOs.Project;
 using TaskManager.Core.Interfaces;
 using TaskManager.Core.Entities;
+using TaskManager.Core.TaskManagerExceptions;
 
 namespace TaskManager.Infrastructure.Services
 {
@@ -36,6 +37,9 @@ namespace TaskManager.Infrastructure.Services
                 .Include(project => project.Tasks)
                 .FirstOrDefaultAsync();
 
+            if (project == null)
+                return null;
+
             return _mapper.Map<ProjectResponse>(project);
         }
 
@@ -50,14 +54,14 @@ namespace TaskManager.Infrastructure.Services
             return _mapper.Map<ProjectResponse>(project);
         } 
 
-        public async Task<ProjectResponse?> UpdateProjectAsync(UpdateProjectRequest request,int userId,int projectId)
+        public async Task<ProjectResponse> UpdateProjectAsync(UpdateProjectRequest request,int userId,int projectId)
         {
             var project = await _unitOfWork.Projects
                 .Query()
                 .FirstOrDefaultAsync(project => project.Id == projectId && project.OwnerId == userId);
 
             if (project == null)
-                return null;
+                throw new ProjectNotFoundException("Project Unavailable...");
 
             project.Name = request.Name;
             project.Description = request.Description;

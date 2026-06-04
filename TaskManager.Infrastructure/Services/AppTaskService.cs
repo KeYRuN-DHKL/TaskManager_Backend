@@ -1,5 +1,6 @@
 ﻿    using AutoMapper;
     using Microsoft.EntityFrameworkCore;
+    using TaskManager.Core.TaskManagerExceptions;
     using TaskManager.Core.DTOs.AppTask;
     using TaskManager.Core.Entities;
     using TaskManager.Core.Enum;
@@ -91,7 +92,10 @@
                     .Include(task => task.Assignee)
                     .FirstOrDefaultAsync(task => task.Id ==  taskId);
 
-                return task == null ? null : _mapper.Map<TaskResponse>(task);
+            if (task == null)
+                return null;
+
+                return _mapper.Map<TaskResponse>(task);
             }
 
             public async Task<TaskResponse> CreateTaskAsync(CreateTaskRequest request)
@@ -104,12 +108,12 @@
                 return _mapper.Map<TaskResponse>(task);
             }
 
-            public async Task<TaskResponse?> UpdateTaskAsync(int taskId,UpdateTaskRequest request)
+            public async Task<TaskResponse> UpdateTaskAsync(int taskId,UpdateTaskRequest request)
             {
                 var task = await _unitOfWork.Tasks.GetByIdAsync(taskId);
 
-                if (task == null)
-                    return null;
+            if (task == null)
+                throw new TaskNotFoundException("Task not Available...");
 
                 task.Title = request.Title;
                 task.Description = request.Description;
@@ -121,15 +125,20 @@
                 _unitOfWork.Tasks.Update(task);
                 await _unitOfWork.SaveChangesAsync();
 
-                return await GetTaskByIdAsync(taskId);
+            var result = await GetTaskByIdAsync(taskId);
+
+            if (result == null)
+                throw new TaskNotFoundException("Unable to find the task...");
+
+            return result;
             }
 
             public async Task<bool> DeleteTaskAsync(int taskId)
             {
                 var task = await _unitOfWork.Tasks.GetByIdAsync(taskId);
 
-                if (task == null)
-                    return false;
+            if (task == null)
+                return false;
 
                 task.IsDeleted = true;
 

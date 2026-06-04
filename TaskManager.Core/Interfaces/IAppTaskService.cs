@@ -7,7 +7,7 @@ namespace TaskManager.Core.Interfaces
         Task<IEnumerable<TaskResponse>> GetTasksByProjectAsync(int projectId,TaskFilterParameters filter);
         Task<TaskResponse?> GetTaskByIdAsync(int taskId);
         Task<TaskResponse> CreateTaskAsync(CreateTaskRequest request);
-        Task<TaskResponse?> UpdateTaskAsync(int taskId,UpdateTaskRequest request);
+        Task<TaskResponse> UpdateTaskAsync(int taskId,UpdateTaskRequest request);
         Task<bool> DeleteTaskAsync(int taskId);
         Task<IEnumerable<TaskResponse>> GetOverdueTaskAsync(int userId);
         Task<Dictionary<string, int>> GetTaskSummaryAsync(int projectId);

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using TaskManager.Core.DTOs.AppTask;
 using TaskManager.Core.DTOs.Tag;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Interfaces;
