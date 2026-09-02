@@ -86,7 +86,7 @@ namespace TaskManager.Infrastructure.Services
             project.IsDeleted = true;
 
             _unitOfWork.Projects.Update(project);
-            int rowsAffected = await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return true;
         }

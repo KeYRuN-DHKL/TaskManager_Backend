@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Core.DTOs.AppTask;
 using TaskManager.Core.Interfaces;
+using TaskManager.Core.TaskManagerExceptions;
 
 namespace TaskManager.API.Controller
 {
@@ -60,12 +61,15 @@ namespace TaskManager.API.Controller
         [HttpPut("")]
         public async Task<IActionResult> UpdateTask([FromQuery] int taskId,[FromBody] UpdateTaskRequest request)
         {
-            var task = await _appTaskService.UpdateTaskAsync(taskId,request);
+            try
+            {
+                var task = await _appTaskService.UpdateTaskAsync(taskId, request);
 
-            if (task == null)
-                return NotFound("Task not found...");
-
-            return Ok(task);
+                return Ok(task);
+            }catch(TaskNotFoundException ex)
+            {
+                return Conflict(ex.Message);
+            }
         }
 
         [HttpDelete("{taskId:int}")]
