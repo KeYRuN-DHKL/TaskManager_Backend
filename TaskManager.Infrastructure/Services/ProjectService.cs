@@ -66,6 +66,7 @@ namespace TaskManager.Infrastructure.Services
             project.Name = request.Name;
             project.Description = request.Description;
             project.IsCompleted = request.IsCompleted;
+            project.UpdatedAt = request.UpdatedAt;
 
             _unitOfWork.Projects.Update(project);
             await _unitOfWork.SaveChangesAsync();

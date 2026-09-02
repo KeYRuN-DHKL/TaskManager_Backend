@@ -8,6 +8,7 @@ namespace TaskManager.Core.DTOs.Project
     (
         string Name,
         string? Description,
-        bool IsCompleted
+        bool IsCompleted,
+        DateTime UpdatedAt
     );
 }

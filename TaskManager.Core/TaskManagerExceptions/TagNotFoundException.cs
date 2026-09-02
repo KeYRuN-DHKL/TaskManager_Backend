@@ -1,7 +1,9 @@
-﻿namespace TaskManager.Core.TaskManagerExceptions
+﻿using System.Net;
+
+namespace TaskManager.Core.TaskManagerExceptions
 {
-    public class TagNotFoundException : Exception
+    public class TagNotFoundException : AppException
     {
-        public TagNotFoundException(string message) : base(message) { }
+        public TagNotFoundException(string message) : base(message,HttpStatusCode.NotFound) { }
     }
 }

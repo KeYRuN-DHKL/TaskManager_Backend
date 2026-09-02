@@ -21,7 +21,7 @@ namespace TaskManager.API.Controller
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Register([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var result = await _authService.LoginAsync(request);
             

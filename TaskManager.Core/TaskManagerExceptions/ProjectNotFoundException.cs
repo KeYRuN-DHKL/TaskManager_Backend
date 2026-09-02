@@ -1,7 +1,9 @@
-﻿namespace TaskManager.Core.TaskManagerExceptions
+﻿using System.Net;
+
+namespace TaskManager.Core.TaskManagerExceptions
 {
-    public class ProjectNotFoundException : Exception
+    public class ProjectNotFoundException : AppException
     {
-        public ProjectNotFoundException(string message) : base(message) { }
+        public ProjectNotFoundException(string message) : base(message,HttpStatusCode.NotFound) { }
     }
 }
