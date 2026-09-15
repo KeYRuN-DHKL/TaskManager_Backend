@@ -6,9 +6,7 @@ namespace TaskManager.Core.DTOs.Project
 {
     public record CreateProjectRequest
     (
-        int id,
         string Name,
-        string? Description,
-        DateTime createdAt
+        string? Description
     );
 }
