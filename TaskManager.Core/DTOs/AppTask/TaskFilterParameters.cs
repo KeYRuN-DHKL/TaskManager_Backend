@@ -4,6 +4,7 @@ namespace TaskManager.Core.DTOs.AppTask
 {
     public record TaskFilterParameters
     {
+        public int? ProjectId { get; set; }
         public TaskStatusEnum? Status { get; init; }
         public TaskPriorityEnum? Priority { get; init; }
         public string? Tag { get; init; }

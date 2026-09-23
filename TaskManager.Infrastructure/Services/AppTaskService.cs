@@ -19,11 +19,11 @@
                 _mapper = mapper;
             }
 
-            public async Task<IEnumerable<TaskResponse>> GetTasksByProjectAsync(int projectId,TaskFilterParameters filter)
+            public async Task<IEnumerable<TaskResponse>> GetTasksByProjectAsync(TaskFilterParameters filter)
             {
                 var query = _unitOfWork.Tasks
                     .Query()
-                    .Where(t => t.ProjectId == projectId)
+                    .Where(t => t.ProjectId == filter.projectId)
                     .Include(t => t.Assignee)
                     .Include(t => t.TaskTag)
                     .ThenInclude(tt => tt.Tag)
@@ -116,7 +116,6 @@
                 throw new TaskNotFoundException("Task not Available...");
 
                 task.Title = request.Title;
-                task.Description = request.Description;
                 task.Priority = request.Priority;
                 task.Status = request.Status;
                 task.DueDate = request.DueDate;
@@ -148,7 +147,7 @@
                 if (rowsAffected > 0)
                     return true;
                 else
-                    return false;
+                return false;
             }
         }
     }

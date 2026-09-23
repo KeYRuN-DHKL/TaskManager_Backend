@@ -5,7 +5,6 @@ namespace TaskManager.Core.Entities
     public class AppTaskEntity : BaseEntity
     {
         public required string Title { get; set; } 
-        public string? Description { get; set; }
         public TaskPriorityEnum Priority { get; set; } = TaskPriorityEnum.Medium;
         public TaskStatusEnum Status { get; set; } = TaskStatusEnum.Todo;
         public DateTime? DueDate { get; set; }

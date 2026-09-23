@@ -18,10 +18,10 @@ namespace TaskManager.API.Controller
             _appTaskService = appTaskService;
         }
 
-        [HttpGet("projects/{projectId}")]
-        public async Task<IActionResult> GetTaskByProject([FromRoute] int projectId, [FromBody] TaskFilterParameters filter)
+        [HttpGet("projects")]
+        public async Task<IActionResult> GetTaskByProject([FromQuery] TaskFilterParameters filter)
         {
-            var tasks = await _appTaskService.GetTasksByProjectAsync(projectId,filter);
+            var tasks = await _appTaskService.GetTasksByProjectAsync(filter);
             return Ok(tasks);
         }
 
@@ -39,8 +39,8 @@ namespace TaskManager.API.Controller
             return Ok(summary);
         }
 
-        [HttpGet("project")]
-        public async Task<IActionResult> GetTaskById([FromQuery] int taskId)
+        [HttpGet("project/{taskId}")]
+        public async Task<IActionResult> GetTaskById([FromRoute] int taskId)
         {
             var task = await _appTaskService.GetTaskByIdAsync(taskId);
 
@@ -73,7 +73,7 @@ namespace TaskManager.API.Controller
         }
 
         [HttpDelete("{taskId:int}")]
-        public async Task<IActionResult> DeleteTask([FromQuery] int taskId)
+        public async Task<IActionResult> DeleteTask([FromRoute] int taskId)
         {
             var IsDeleted = await _appTaskService.DeleteTaskAsync(taskId);
 

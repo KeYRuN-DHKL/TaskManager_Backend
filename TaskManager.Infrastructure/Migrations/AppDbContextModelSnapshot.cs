@@ -36,9 +36,6 @@ namespace TaskManager.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime?>("DueDate")
                         .HasColumnType("datetime(6)");
 

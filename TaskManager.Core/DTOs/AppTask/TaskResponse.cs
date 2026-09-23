@@ -17,13 +17,12 @@ namespace TaskManager.Core.DTOs.AppTask
 
         public int Id { get; init; }
         public required string Title { get; init; }
-        public string? Description { get; init; }
 
         public required string Status { get; init; }
         public required string Priority { get; init; }
         public DateTime DueDate { get; init; }
         public int ProjectId { get; init; }
-        public int AssigneeId { get; init; }
+        public int? AssigneeId { get; init; }
         public required List<string> Tags { get; init; } = new List<string>();
         public DateTime CreatedAt { get; init; }
     };
