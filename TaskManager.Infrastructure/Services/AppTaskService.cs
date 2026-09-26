@@ -23,7 +23,7 @@
             {
                 var query = _unitOfWork.Tasks
                     .Query()
-                    .Where(t => t.ProjectId == filter.projectId)
+                    .Where(t => t.ProjectId == filter.ProjectId)
                     .Include(t => t.Assignee)
                     .Include(t => t.TaskTag)
                     .ThenInclude(tt => tt.Tag)
@@ -41,13 +41,12 @@
                 if (filter.IsOverdue == true)
                     query = query.Where(t => t.DueDate < DateTime.UtcNow && t.Status != TaskStatusEnum.Done);
 
-                var tasks = query
+                var tasks = await query
                     .OrderByDescending(task => task.Priority)
                     .ThenBy(task => task.DueDate)
                     .Skip((filter.Page - 1) * filter.PageSize)
                     .ToListAsync();
             
-
                 return _mapper.Map<IEnumerable<TaskResponse>>(tasks);
             }
 
@@ -98,14 +97,14 @@
                 return _mapper.Map<TaskResponse>(task);
             }
 
-            public async Task<TaskResponse> CreateTaskAsync(CreateTaskRequest request)
+            public async Task<List<TaskResponse>> CreateTaskAsync(List<CreateTaskRequest> request)
             {
-                var task = _mapper.Map<AppTaskEntity>(request);
+                var task = _mapper.Map<List<AppTaskEntity>>(request);
 
-                await _unitOfWork.Tasks.AddAsync(task);
+                await _unitOfWork.Tasks.AddRangeAsync(task);
                 await _unitOfWork.SaveChangesAsync();
 
-                return _mapper.Map<TaskResponse>(task);
+                return _mapper.Map<List<TaskResponse>>(task);
             }
 
             public async Task<TaskResponse> UpdateTaskAsync(int taskId,UpdateTaskRequest request)

@@ -51,7 +51,7 @@ namespace TaskManager.API.Controller
         }
 
         [HttpPost("")]
-        public async Task<IActionResult> CreateTask([FromBody] CreateTaskRequest request)
+        public async Task<IActionResult> CreateTask([FromBody] List<CreateTaskRequest> request)
         {
             //var updatedRequest = request with { ProjectId = projectId };
             var task = await _appTaskService.CreateTaskAsync(request);

@@ -28,6 +28,9 @@ namespace TaskManager.Infrastructure.Repositories
         public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate) =>
             await _dbset.FirstOrDefaultAsync(predicate);
 
+        public async Task AddRangeAsync(IEnumerable<T> entities) =>
+            await _dbset.AddRangeAsync(entities);
+
         public async Task AddAsync(T entity) =>
             await _dbset.AddAsync(entity);
 

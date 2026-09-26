@@ -10,6 +10,7 @@ using TaskManager.Core.Mapping;
 using TaskManager.Infrastructure.Data;
 using TaskManager.Infrastructure.Repositories;
 using TaskManager.Infrastructure.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,10 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IAppTaskService, AppTaskService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+}); 
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
