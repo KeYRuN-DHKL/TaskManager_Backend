@@ -7,6 +7,7 @@ using TaskManager.Core.TaskManagerExceptions;
 using TaskManager.Core.DTOs.Auth;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Interfaces;
+using TaskManager.Core.Authorization;
 
 namespace TaskManager.Infrastructure.Services
 {
@@ -39,7 +40,8 @@ namespace TaskManager.Infrastructure.Services
             {
                 UserName = request.UserName,
                 Email = request.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                Role = Roles.User,
             };
 
             await _unitOfWork.Users.AddAsync(user);

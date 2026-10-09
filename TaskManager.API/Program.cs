@@ -11,6 +11,7 @@ using TaskManager.Infrastructure.Data;
 using TaskManager.Infrastructure.Repositories;
 using TaskManager.Infrastructure.Services;
 using System.Text.Json.Serialization;
+using TaskManager.Core.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +43,8 @@ builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-}); 
+});
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -94,6 +96,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy(Policies.AdminOnly, policy => policy.RequireRole("Admin"));
+//    options.AddPolicy(Policies.UserOnly, policy => policy.RequireRole("User"));
+
+//});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", builder =>
@@ -105,6 +114,24 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+  var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+  var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+    if (!db.Users.Any(u => u.Role == Roles.Admin))
+    {
+        db.Users.Add(new TaskManager.Core.Entities.UserEntity
+        {
+            UserName = config["SeedAdmin:UserName"]!,
+            Email = config["SeedAdmin:Email"]!,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(config["SeedAdmin:Password"]!),
+            Role = Roles.Admin
+        });
+        db.SaveChanges();
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

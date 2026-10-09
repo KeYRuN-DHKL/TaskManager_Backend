@@ -8,6 +8,6 @@ namespace TaskManager.Core.DTOs.AppTask
         TaskStatusEnum Status,
         TaskPriorityEnum Priority,
         DateTime DueDate,
-        int AssigneeId
-        );
+        int? AssigneeId
+    );
 }
